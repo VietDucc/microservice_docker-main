@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     stages {
         stage('Clone Repository') {
             steps {
@@ -20,11 +21,10 @@ pipeline {
             steps {
                 script {
                     echo 'Starting Docker Compose with specified file'
-                    sh 'docker-compose -f compose.yaml up -d'
+                    sh 'docker-compose -f docker-compose.yml up -d' // Khởi động các container mới
                 }
             }
-}
-
+        }
 
         stage('Verify Deployment') {
             steps {
