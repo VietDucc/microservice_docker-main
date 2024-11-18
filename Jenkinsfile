@@ -14,8 +14,8 @@ pipeline {
      stage('SonarQube Analysis') {
             steps {
                 script {
-                    def scannerHome = tool 'SonarScanner' // Đảm bảo SonarScanner đã được cấu hình trong Jenkins
-                    withSonarQubeEnv('sonarqube') { // Sử dụng tên cấu hình SonarQube trong Jenkins
+                    def scannerHome = tool 'SonarScanner' // Đảm bảo tên đúng với tên công cụ đã cài đặt
+                    withSonarQubeEnv('sonarqube') { // Tên server SonarQube phải giống với cấu hình trong Jenkins
                         sh """
                         ${scannerHome}/bin/sonar-scanner \
                         -Dsonar.projectKey=micro \
