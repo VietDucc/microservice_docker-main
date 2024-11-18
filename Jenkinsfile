@@ -27,6 +27,18 @@ pipeline {
                 }
             }
         }
+          stage('Snyk Security Scan') {
+            steps {
+                script {
+                    echo 'Running Snyk Security Scan...'
+                    snykSecurity(
+                        snykInstallation: 'Snyk', // Đảm bảo tên đúng với cài đặt Snyk trong Jenkins
+                        snykTokenId: 'organisation-anyk-api-token', // ID của Snyk API Token đã cấu hình trong Jenkins Credentials
+                        additionalArguments: '--all-projects --detection-depth=3' // Các tham số tùy chọn khác
+                    )
+                }
+            }
+        }
         stage('Build Docker Images') {
             steps {
                 script {
