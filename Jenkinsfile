@@ -1,6 +1,9 @@
 pipeline {
     agent any
-
+     environment {
+        SONAR_HOST_URL = 'http://192.168.1.40:9000' // Thay thế bằng URL của SonarQube của bạn
+           SONAR_AUTH_TOKEN = credentials('micro-sonar-token') 
+    }
     stages {
         stage('Clone Repository') {
             steps {
@@ -8,6 +11,22 @@ pipeline {
             }
         }
 
+     stage('SonarQube Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool 'SonarScanner' // Đảm bảo SonarScanner đã được cấu hình trong Jenkins
+                    withSonarQubeEnv('sonarqube') { // Sử dụng tên cấu hình SonarQube trong Jenkins
+                        sh """
+                        ${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.projectKey=micro \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=$SONAR_HOST_URL \
+                        -Dsonar.login=$SONAR_AUTH_TOKEN
+                        """
+                    }
+                }
+            }
+        }
         stage('Build Docker Images') {
             steps {
                 script {
